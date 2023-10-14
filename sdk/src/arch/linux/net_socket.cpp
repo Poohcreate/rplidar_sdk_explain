@@ -109,7 +109,24 @@ SocketAddress::address_type_t SocketAddress::getAddressType() const
             return ADDRESS_TYPE_INET;
     }
 }
-
+/*
+在 C++ 中，const 修饰成员函数既可以放在函数声明的末尾（后置 const），也可以放在函数声明的开始（前置 const）。这两种位置的 const 有一些细微的区别。
+1. 后置 const：
+   将 const 放在函数声明的末尾，表示该成员函数是一个常量成员函数。这意味着在这个函数中，不能修改成员变量的值（除非成员变量被声明为 mutable）。后置 const 的目的是为了告诉编译器和其他开发者，这个函数不会修改对象的状态，可以在常量对象（const 对象）上调用。
+   例如：
+   ```
+   void someFunction() const;
+   ```
+2. 前置 const：
+   将 const 放在函数声明的开始，表示该成员函数的返回值是一个常量。这意味着函数的返回值不能被修改，可以视为一个 "const 返回类型"。前置 const 的目的是将 const 应用于函数的返回值，以防止返回值被修改。
+   例如：
+   ```
+   const int someFunction();
+   ```
+在这个例子中，返回值 int 被 const 修饰，意味着返回的整数值是常量，不允许被修改。
+需要注意的是，无论是后置 const 还是前置 const，它们都不影响函数的参数或局部变量的修改能力。
+综上所述，const 放在函数声明的末尾表示常量成员函数，表示函数不会修改对象的成员变量；而 const 放在函数声明的开始表示函数的返回值是一个常量，表示返回值不能被修改。
+*/
 int SocketAddress::getPort() const
 {
     switch (getAddressType()) {
