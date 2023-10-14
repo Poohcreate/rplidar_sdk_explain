@@ -18,7 +18,13 @@
 
 namespace rp{ namespace net {
 
-
+/*
+"static inline" 是一种函数修饰符，用于在代码中声明静态内联函数。
+静态修饰符 "static" 用于在函数声明中指示它是一个静态函数。静态函数属于类的整体，不依赖于类的任何对象，因此不需要实例化即可调用。静态函数只能访问类的静态成员变量和静态函数，不能直接访问非静态成员变量和非静态函数。
+内联修饰符 "inline" 用于在函数声明中指示它是一个内联函数。内联函数在编译时会直接将函数体的代码插入到调用处，而不会生成函数的调用与返回的开销。内联函数通常用于短小且频繁调用的函数，以提高代码执行效率。
+静态内联函数的作用是将函数内联展开，并且在整个程序中只有一份函数的实例化。这可以减少函数调用的开销，并且可以省略额外的函数调用开销和内存占用。同时，静态内联函数只能在当前文件中使用，不能被其他文件访问。
+总结起来，"static inline" 修饰的函数是一个静态内联函数，它在编译时被直接插入调用处，在整个程序中只有一份实例化，并且只能在当前文件中使用。
+*/
 static inline int _halAddrTypeToOSType(SocketAddress::address_type_t type) 
 {
     switch (type) {
@@ -68,6 +74,17 @@ SocketAddress::SocketAddress(void * platform_data)
  : _platform_data(platform_data)
 {}
 
+/*
+    https://www.cnblogs.com/zpcdbky/p/5027481.html
+    @赋值运算符重载函数(operator=)
+    @更“正统”的叫法是“拷贝赋值运算符”(Copy Assignment Operator)
+    
+    一般地，赋值运算符重载函数的参数是函数所在类的const类型的引用（如上面例1），加const是因为：
+        ①我们不希望在这个函数中对用来进行赋值的“原版”做任何修改。
+        ②加上const，对于const的和非const的实参，函数都能接受；如果不加，就只能接受非const的实参。
+    用引用是因为：
+        这样可以避免在函数调用时对实参的一次拷贝，提高了效率。
+*/
 SocketAddress & SocketAddress::operator = (const SocketAddress &src)
 {
     memcpy(_platform_data, src._platform_data, sizeof(sockaddr_storage));
